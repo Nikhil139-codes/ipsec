@@ -820,7 +820,7 @@ def extract_features_from_packets(
             "total_bytes": sum(packet_lengths),
             "throughput_bps": round((sum(packet_lengths) * 8) / duration_sec, 2) if duration_sec > 0 else 0.0,
             "burst_count": len(flows),
-            "burstiness": round(length_stats.get("std_dev", 0) / (length_stats.get("mean", 1) or 1), 4),
+            "burstiness": round((length_stats.get("std_dev") or 0) / ((length_stats.get("mean") or 1)), 4),
             "packet_size_entropy": entropy_val,
             "shannon_entropy": entropy_val,
         },

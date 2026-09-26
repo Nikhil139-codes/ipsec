@@ -1,0 +1,43 @@
+# render.yaml - Render Blueprint for IPsec Security Analyzer
+# Deploy both services at once via: Render Dashboard -> New -> Blueprint
+
+services:
+  # ---------------------------------------------
+  # 1. FastAPI Python Backend
+  # ---------------------------------------------
+  - type: web
+    name: ipsec-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false          # You will enter this manually in the Render dashboard
+      - key: GROQ_MODEL
+        value: groq/compound
+    healthCheckPath: /
+
+  # ---------------------------------------------
+  # 2. Next.js Frontend
+  # ---------------------------------------------
+  - type: web
+    name: ipsec-frontend
+    runtime: node
+    buildCommand: npm install -g pnpm && pnpm install && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NEXT_PUBLIC_ANALYZER_API_URL
+        fromService:
+          type: web
+          name: ipsec-backend
+          property: host
+          prefix: https://
+      - key: NEXT_PUBLIC_USE_MOCK_API
+        value: "false"
+      - key: GROQ_API_KEY
+        sync: false          # Enter manually in Render dashboard
+      - key: GROQ_MODEL
+        value: groq/compound

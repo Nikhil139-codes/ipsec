@@ -99,6 +99,7 @@ export default function Page() {
             busy={analyzer.busy}
             error={analyzer.error}
             onAnalyze={analyzer.analyzeSecurity}
+            onGo={setView}
           />
         )}
         {view === 'attacker' && (
@@ -143,7 +144,14 @@ export default function Page() {
 
       {/* Top-level global report modal */}
       {globalReport && (
-        <ReportModal report={globalReport} onClose={() => setGlobalReport(null)} />
+        <ReportModal
+          report={globalReport}
+          onClose={() => setGlobalReport(null)}
+          onLaunchAttacker={() => {
+            setGlobalReport(null)
+            setView('attacker')
+          }}
+        />
       )}
     </>
   )

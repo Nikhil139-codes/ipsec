@@ -13,6 +13,7 @@ import {
   FileCode2,
   Info,
   Loader2,
+  Lock,
   Play,
   RotateCcw,
   Shield,
@@ -185,29 +186,41 @@ export function AttackerSimulationPage({
   }
 
   // ==========================================
-  // Requirement 10: Empty State when no report exists
+  // Locked State: Locked until Security Analysis is run
   // ==========================================
-  if (!report || (!report.nist_assessment && !report.observed_features)) {
+  const isUnlocked = Boolean(
+    report && (
+      Boolean(report.ai_analysis?.available) ||
+      Boolean(report.report_id) ||
+      (report.ai_analysis?.security_interpretation && !report.ai_analysis.summary?.includes('Click "Run Security Assessment"'))
+    )
+  )
+  if (!isUnlocked) {
     return (
-      <div className="rounded-xl border bg-card p-10 text-center shadow-xs max-w-2xl mx-auto my-8">
-        <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-600 mb-4">
-          <ShieldAlert className="size-8" />
+      <div className="rounded-2xl border bg-card p-10 text-center shadow-lg max-w-2xl mx-auto my-12 relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500" />
+        <div className="mx-auto flex size-20 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-600 border border-amber-500/20 mb-5 shadow-xs">
+          <Lock className="size-10" />
         </div>
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">
-          No Security Assessment Report available.
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-400 border border-amber-500/20 mb-3">
+          SECURITY ANALYSIS REQUIRED • MODULE LOCKED
+        </span>
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">
+          Attacker Simulation is Locked
         </h2>
-        <p className="text-sm text-muted-foreground mt-1.5 max-w-md mx-auto">
-          Please analyze a PCAP first. The Attacker Simulation module automatically loads findings from the latest generated security assessment report.
+        <p className="text-sm text-muted-foreground mt-3 max-w-lg mx-auto leading-relaxed">
+          The adversarial attack model requires an active AI Security Assessment Report to identify vulnerabilities in your VPN configuration. Please run security analysis on your PCAP traffic first so the attacker engine can evaluate discovered vulnerabilities and generate target-specific exploit vectors.
         </p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           {onGo && (
             <>
-              <Button onClick={() => onGo('analysis')} className="gap-2 text-xs">
+              <Button onClick={() => onGo('security')} className="gap-2 text-xs font-semibold px-5 shadow-sm">
+                <ShieldCheck className="size-4" />
+                Run Security Analysis
+              </Button>
+              <Button variant="outline" onClick={() => onGo('analysis')} className="gap-2 text-xs">
                 <FileCode2 className="size-4" />
                 Go to PCAP Analysis
-              </Button>
-              <Button variant="outline" onClick={() => onGo('dashboard')} className="gap-2 text-xs">
-                Dashboard Overview
               </Button>
             </>
           )}
@@ -254,6 +267,23 @@ export function AttackerSimulationPage({
         <p className="text-sm text-muted-foreground">
           Validate detected VPN weaknesses in an authorized security testing environment.
         </p>
+      </div>
+
+      {/* Unlocked Banner */}
+      <div className="flex items-center justify-between rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-xs text-emerald-800 dark:text-emerald-300">
+        <div className="flex items-center gap-2.5">
+          <span className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+            <ShieldCheck className="size-4" />
+          </span>
+          <div>
+            <p className="font-semibold text-emerald-900 dark:text-emerald-200">
+              Module Unlocked • Active Security Assessment Report Loaded
+            </p>
+            <p className="text-[11px] text-muted-foreground">
+              Adversarial simulation tests generated using findings from Security Report (NIST Risk Score: {score}/100 • {level})
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Groq Error Banner if API unavailable */}

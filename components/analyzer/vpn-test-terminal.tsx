@@ -30,6 +30,7 @@ export function VpnTestTerminal({
   const [history, setHistory] = useState<string[]>(INITIAL_GREETING)
   const [inputCommand, setInputCommand] = useState('')
   const [isExecuting, setIsExecuting] = useState(false)
+  const [execElapsed, setExecElapsed] = useState(0)
   const terminalEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -91,21 +92,38 @@ export function VpnTestTerminal({
       return
     }
 
-    // Sequential execution state for approximately 2.5 seconds (2500ms)
-    await new Promise((r) => setTimeout(r, 550))
-    setHistory((prev) => [...prev, '[INFO] Initializing security test...'])
+    // Sequential multi-stage execution lasting ~45 seconds (45000ms)
+    setExecElapsed(0)
+    const startTime = Date.now()
+    const timer = setInterval(() => {
+      setExecElapsed(Math.floor((Date.now() - startTime) / 1000))
+    }, 1000)
 
-    await new Promise((r) => setTimeout(r, 650))
-    setHistory((prev) => [...prev, '[INFO] Connecting to simulated VPN lab...'])
+    const progressiveSteps = [
+      { delay: 3500, line: `[00:03] [INIT] Allocating sandbox test namespace & attaching veth interface...` },
+      { delay: 8000, line: `[00:08] [CONNECT] Hooking into strongSwan charon daemon socket (172.30.0.1:500)...` },
+      { delay: 13000, line: `[00:13] [PROBE] Extracting active kernel XFRM state table (SAD/SPD rules)...` },
+      { delay: 18000, line: `[00:18] [CRAFT] Generating targeted validation probe sequence for '${raw}'...` },
+      { delay: 23000, line: `[00:23] [INJECT] Transmitting frame sequence across ESP tunnel data plane...` },
+      { delay: 28000, line: `[00:28] [MONITOR] Intercepting IKEv2 NOTIFY and INFORMATIONAL responses...` },
+      { delay: 33000, line: `[00:33] [ANALYSIS] Evaluating cryptographic boundaries against NIST SP 800-77 rules...` },
+      { delay: 38000, line: `[00:38] [CORRELATE] Correlating anti-replay counter and packet sequence integrity...` },
+      { delay: 42000, line: `[00:42] [COMPILE] Finalizing heuristic exploit analysis and breaking point data...` },
+      { delay: 45000, line: `[00:45] [COMPLETE] Validation probe finished. Diagnostic results below:` },
+    ]
 
-    await new Promise((r) => setTimeout(r, 650))
-    setHistory((prev) => [...prev, '[INFO] Checking security configuration...'])
+    for (const step of progressiveSteps) {
+      const waitTime = step.delay - (Date.now() - startTime)
+      if (waitTime > 0) {
+        await new Promise((r) => setTimeout(r, waitTime))
+      }
+      setHistory((prev) => [...prev, step.line])
+    }
 
-    await new Promise((r) => setTimeout(r, 650))
-    setHistory((prev) => [...prev, '[INFO] Validating test condition...'])
+    clearInterval(timer)
 
-    // Then after the ~2500ms delay, show final test outcome and results
-    await new Promise((r) => setTimeout(r, 200))
+    // Show final test outcome and results
+    await new Promise((r) => setTimeout(r, 400))
     const outputLines = simResult.terminal_output.slice(1)
     const resultLines = outputLines.filter(
       (line) =>
@@ -114,12 +132,13 @@ export function VpnTestTerminal({
     )
 
     for (let i = 0; i < resultLines.length; i++) {
-      await new Promise((r) => setTimeout(r, 100))
+      await new Promise((r) => setTimeout(r, 120))
       setHistory((prev) => [...prev, resultLines[i]])
     }
 
     setHistory((prev) => [...prev, '']) // trailing blank line
     setIsExecuting(false)
+    setExecElapsed(0)
     onCommandExecuted(simResult)
   }
 
@@ -222,9 +241,9 @@ export function VpnTestTerminal({
           )
         })}
         {isExecuting && (
-          <div className="flex items-center gap-2 text-zinc-500 italic text-xs pt-1">
+          <div className="flex items-center gap-2 text-cyan-400 italic text-xs pt-1">
             <span className="size-2 rounded-full bg-cyan-400 animate-ping inline-block" />
-            Executing simulated validation in progress...
+            Executing simulated validation in progress... ({execElapsed}s / ~45s)
           </div>
         )}
         <div ref={terminalEndRef} />

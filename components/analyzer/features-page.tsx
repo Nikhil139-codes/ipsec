@@ -12,6 +12,8 @@ import {
   Network,
   RefreshCw,
   Shield,
+  ShieldCheck,
+  Sparkles,
   Terminal,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -69,10 +71,26 @@ export function FeaturesPage({
             Normalized behavioral indicators and structured JSON schema extracted via TShark.
           </p>
         </div>
-        <Button onClick={onExtract} disabled={busy} className="gap-2">
-          <RefreshCw className={`size-4 ${busy ? 'animate-spin' : ''}`} />
-          {busy ? 'Extracting features...' : 'Extract features'}
-        </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            variant="outline"
+            onClick={onPredict}
+            disabled={!features || busy}
+            className="gap-2 font-medium shadow-2xs"
+          >
+            <Sparkles className="size-4 text-primary" />
+            Traffic Classifier
+          </Button>
+          <Button
+            onClick={onSecurity || onPredict}
+            disabled={!features || busy}
+            className="gap-2 bg-primary text-primary-foreground font-semibold shadow-xs"
+          >
+            <ShieldCheck className="size-4" />
+            Run Security Assessment
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Error Alert Banner if any */}
@@ -496,15 +514,6 @@ export function FeaturesPage({
         )}
       </div>
 
-      {/* Navigation action */}
-      <div className="flex flex-wrap items-center justify-end gap-3">
-        <Button variant="outline" onClick={onPredict} disabled={!features || busy}>
-          Traffic Classifier
-        </Button>
-        <Button onClick={onSecurity || onPredict} disabled={!features || busy} className="gap-2">
-          Run Security Assessment <ChevronRight className="size-4" />
-        </Button>
-      </div>
     </div>
   )
 }

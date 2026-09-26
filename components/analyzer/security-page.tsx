@@ -4,6 +4,7 @@ import { useState } from 'react'
 import {
   AlertCircle,
   AlertTriangle,
+  ArrowRight,
   Bot,
   Check,
   CheckCircle2,
@@ -11,6 +12,7 @@ import {
   ExternalLink,
   FileCode2,
   FileText,
+  Flame,
   HelpCircle,
   KeyRound,
   Layers,
@@ -33,6 +35,7 @@ import {
   type SecurityCheckFinding,
   type SecurityCheckStatus,
   type SecurityCheckSeverity,
+  type View,
 } from '@/lib/api/types'
 import { ReportModal } from './report-modal'
 import { ReportChat } from './report-chat'
@@ -43,6 +46,7 @@ interface SecurityPageProps {
   busy: boolean
   error?: string | null
   onAnalyze: () => void
+  onGo?: (view: View) => void
 }
 
 export function SecurityPage({
@@ -51,6 +55,7 @@ export function SecurityPage({
   busy,
   error,
   onAnalyze,
+  onGo,
 }: SecurityPageProps) {
   const [copied, setCopied] = useState(false)
   const [expandedCheck, setExpandedCheck] = useState<string | null>(null)
@@ -184,7 +189,7 @@ export function SecurityPage({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {securityAssessment && (
+          {securityAssessment ? (
             <>
               <Button
                 variant="default"
@@ -200,11 +205,12 @@ export function SecurityPage({
                 {copied ? 'Copied JSON' : 'Copy JSON'}
               </Button>
             </>
+          ) : (
+            <Button onClick={onAnalyze} disabled={busy} className="gap-2">
+              <RefreshCw className={`size-4 ${busy ? 'animate-spin' : ''}`} />
+              {busy ? 'Evaluating rules...' : 'Run Security Assessment'}
+            </Button>
           )}
-          <Button onClick={onAnalyze} disabled={busy} className="gap-2">
-            <RefreshCw className={`size-4 ${busy ? 'animate-spin' : ''}`} />
-            {busy ? 'Evaluating rules...' : securityAssessment ? 'Re-run assessment' : 'Run Security Assessment'}
-          </Button>
         </div>
       </div>
 
@@ -261,12 +267,12 @@ export function SecurityPage({
                 <div className="relative h-3 w-full overflow-hidden rounded-full bg-muted">
                   <div
                     className={`h-full transition-all duration-500 ${(risk?.score ?? 0) >= 70
-                        ? 'bg-rose-500'
-                        : (risk?.score ?? 0) >= 40
-                          ? 'bg-orange-500'
-                          : (risk?.score ?? 0) >= 20
-                            ? 'bg-amber-500'
-                            : 'bg-emerald-500'
+                      ? 'bg-rose-500'
+                      : (risk?.score ?? 0) >= 40
+                        ? 'bg-orange-500'
+                        : (risk?.score ?? 0) >= 20
+                          ? 'bg-amber-500'
+                          : 'bg-emerald-500'
                       }`}
                     style={{ width: `${Math.min(100, Math.max(5, risk?.score ?? 0))}%` }}
                   />
@@ -366,6 +372,39 @@ export function SecurityPage({
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* ATTACK MODEL TEST CALLOUT OPTION                                          */}
+          {/* ========================================================================= */}
+          <div className="rounded-xl border-2 border-rose-500/30 bg-rose-50/50 dark:bg-rose-950/20 p-5 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3.5">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-rose-500/10 text-rose-600">
+                  <Flame className="size-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-foreground">
+                    Would you like to test your VPN configuration using an attack model?
+
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-0.5 max-w-2xl leading-relaxed">
+                    Simulate automated adversarial validation tests in an authorized testbed environment based on the discovered NIST security findings and risk parameters.
+
+                  </p>
+                </div>
+              </div>
+              {onGo && (
+                <Button
+                  onClick={() => onGo('attacker')}
+                  className="bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs shadow-sm gap-2 shrink-0 transition-transform active:scale-95"
+                >
+                  <Flame className="size-4" />
+                  Launch Attacker Simulation
+                  <ArrowRight className="size-3.5" />
+                </Button>
+              )}
             </div>
           </div>
 
@@ -610,7 +649,14 @@ export function SecurityPage({
       )}
 
       {modalReport && (
-        <ReportModal report={modalReport} onClose={() => setModalReport(null)} />
+        <ReportModal
+          report={modalReport}
+          onClose={() => setModalReport(null)}
+          onLaunchAttacker={() => {
+            setModalReport(null)
+            onGo?.('attacker')
+          }}
+        />
       )}
     </div>
   )

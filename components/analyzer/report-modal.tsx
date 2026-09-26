@@ -4,10 +4,12 @@ import { useState } from 'react'
 import {
   AlertCircle,
   AlertTriangle,
+  ArrowRight,
   CheckCircle2,
   Download,
   FileCode,
   FileText,
+  Flame,
   HelpCircle,
   Printer,
   Shield,
@@ -29,9 +31,10 @@ import { type SecurityReport } from '@/lib/api/types'
 interface ReportModalProps {
   report: SecurityReport | null
   onClose: () => void
+  onLaunchAttacker?: () => void
 }
 
-export function ReportModal({ report, onClose }: ReportModalProps) {
+export function ReportModal({ report, onClose, onLaunchAttacker }: ReportModalProps) {
   if (!report) return null
 
   const getRiskBadge = (level: string, score: number) => {
@@ -299,6 +302,36 @@ export function ReportModal({ report, onClose }: ReportModalProps) {
               </pre>
             </div>
           )}
+
+          {/* Attacker Model Simulation Callout Option */}
+          <div className="rounded-xl border-2 border-rose-500/30 bg-rose-50/50 dark:bg-rose-950/20 p-4 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-rose-500/10 text-rose-600">
+                  <Flame className="size-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-foreground">
+                    Would you like to test your VPN configuration using an attack model?
+
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Discovered vulnerabilities ke basis par authorized testbed me automated adversarial tests simulate karein.
+                  </p>
+                </div>
+              </div>
+              {onLaunchAttacker && (
+                <Button
+                  onClick={onLaunchAttacker}
+                  className="bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs shadow-sm gap-2 shrink-0"
+                >
+                  <Flame className="size-4" />
+                  Launch Attacker Simulation
+                  <ArrowRight className="size-3.5" />
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Footer */}

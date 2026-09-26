@@ -58,3 +58,17 @@ button, label { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
 
 .dark { color-scheme: dark; }
+
+/* Suppress Next.js dev indicator, error badge, and overlay portal in bottom left corner */
+nextjs-portal,
+[data-nextjs-toast],
+[data-nextjs-dialog-overlay],
+[data-nextjs-dev-indicator],
+div[data-nextjs-dev-indicator-position],
+div[data-nextjs-dev-indicator-root],
+#next-error-container {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}

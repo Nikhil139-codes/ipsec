@@ -9,6 +9,7 @@ import {
   Flame,
   History,
   LayoutDashboard,
+  Lock,
   RefreshCw,
   Server,
   ShieldCheck,
@@ -52,6 +53,13 @@ export function AnalyzerShell({
   children: React.ReactNode
 }) {
   const title = items.find((item) => item.id === view)?.label
+  const isAttackerUnlocked = Boolean(
+    securityAssessment && (
+      Boolean(securityAssessment.ai_analysis?.available) ||
+      Boolean(securityAssessment.report_id) ||
+      (securityAssessment.ai_analysis?.security_interpretation && !securityAssessment.ai_analysis.summary?.includes('Click "Run Security Assessment"'))
+    )
+  )
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -91,7 +99,13 @@ export function AnalyzerShell({
             {items.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
-                onClick={() => onView(id)}
+                onClick={() => {
+                  if (id === 'attacker' && !isAttackerUnlocked) {
+                    onView('security')
+                    return
+                  }
+                  onView(id)
+                }}
                 className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm transition-colors ${view === id
                     ? 'bg-primary/10 font-medium text-primary'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -101,6 +115,15 @@ export function AnalyzerShell({
                 {label}
                 {id === 'security' && securityAssessment && (
                   <CheckCircle2 className="ml-auto size-3.5 text-emerald-600" />
+                )}
+                {id === 'attacker' && (
+                  isAttackerUnlocked ? (
+                    <CheckCircle2 className="ml-auto size-3.5 text-emerald-600" />
+                  ) : (
+                    <span className="ml-auto inline-flex items-center gap-1 rounded bg-muted/80 px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                      <Lock className="size-2.5 text-amber-500" /> Locked
+                    </span>
+                  )
                 )}
                 {id === 'prediction' && prediction && (
                   <CheckCircle2 className="ml-auto size-3.5 text-emerald-600" />

@@ -51,7 +51,7 @@ export function useAnalyzer() {
     clearError: () => setError(null),
 
     upload: async (next?: File) => {
-      if (!next || !/\.(pcap|pcapng)$/i.test(next.name)) return
+      if (!next || !/\.(pcap|pcapng|cap)$/i.test(next.name)) return
       setFile(next)
 
       // Clear previous PCAP results immediately so no stale data is displayed
@@ -75,24 +75,7 @@ export function useAnalyzer() {
           setFeatures(res.features)
         }
 
-        // If backend returned security assessment directly on upload, populate immediately
-        if (res.nist_assessment && res.risk_assessment) {
-          setSecurityAssessment({
-            session_id: sid || '',
-            observed_features: res.features || ({} as any),
-            nist_assessment: res.nist_assessment,
-            risk_assessment: res.risk_assessment,
-            ai_analysis: {
-              available: false,
-              traffic_class: 'Analyzing...',
-              confidence: null,
-              summary: 'NIST evaluation completed. Click "Run Security Assessment" to execute AI analysis.',
-              security_interpretation: 'Deterministic NIST-based assessment ready.',
-              key_observations: [],
-              recommendations: [],
-            },
-          })
-        }
+        // Security assessment remains null until explicitly evaluated via analyzeSecurity()
 
         // Pre-fetch the first batch of decoded packets in the background
         if (sid) {

@@ -99,18 +99,18 @@ export function ReportChat({ sessionId, reportId, reportName }: ReportChatProps)
   }
 
   return (
-    <div className="rounded-xl border bg-card p-6 shadow-xs mt-6 transition">
+    <div className="rounded-2xl border-2 border-blue-500/30 bg-blue-50/40 dark:bg-blue-950/20 p-6 sm:p-7 shadow-md mt-8 ring-4 ring-blue-500/5 transition-all">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4 mb-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-blue-500/15 pb-4 mb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <span className="flex size-7 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
               <MessageSquare className="size-4" />
             </span>
             <h3 className="text-base font-bold uppercase tracking-wider text-foreground">
               Ask About This Report
             </h3>
-            <span className="rounded bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+            <span className="rounded-full bg-blue-600/15 border border-blue-600/25 px-2.5 py-0.5 text-[11px] font-semibold text-blue-700 dark:text-blue-300">
               RAG Assistant
             </span>
           </div>

@@ -768,7 +768,7 @@ def extract_features_from_packets(
         "ikeRatio": ike_ratio,
         "ahRatio": ah_ratio,
         "cleartextRatio": cleartext_ratio,
-        "burstiness": round(length_stats.get("std_dev", 0) / (length_stats.get("mean", 1) or 1), 4),
+        "burstiness": round((length_stats.get("std_dev") or 0) / ((length_stats.get("mean") or 1)), 4),
         "entropy": entropy_val,
         "capture_name": original_filename,
         "capture_size": format_bytes(file_size),

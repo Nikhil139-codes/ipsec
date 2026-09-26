@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_ANALYZER_API_URL || 'http://localhost:8000'
+export const API_BASE_URL = process.env.NEXT_PUBLIC_ANALYZER_API_URL || 'https://ipsec-backend.onrender.com/'
 export const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API !== 'false'
 
 export async function apiRequest<T>(path: string, options?: RequestInit): Promise<T> {

@@ -1,6 +1,6 @@
 # ?? IPsec Security Analyzer
 
-> An AI-powered IPsec traffic analysis and security assessment platform. Upload PCAP files, extract network features, run NIST-based security evaluations, and simulate attacker scenarios — all in one pipeline.
+> An AI-powered IPsec traffic analysis and security assessment platform. Upload PCAP files, extract network features, run NIST-based security evaluations, and simulate attacker scenarios ï¿½ all in one pipeline.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.3.3-black)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green)
@@ -55,16 +55,16 @@ IPsec Security Analyzer is a full-stack web application for network security pro
 
 ```
 +----------------------------------------------+
-¦              Next.js Frontend                ¦
-¦  Dashboard ? Analysis ? Features ?           ¦
-¦  Assessment ? Testbed ? Attacker Sim         ¦
+ï¿½              Next.js Frontend                ï¿½
+ï¿½  Dashboard ? Analysis ? Features ?           ï¿½
+ï¿½  Assessment ? Testbed ? Attacker Sim         ï¿½
 +----------------------------------------------+
-                  ¦  HTTP REST API
+                  ï¿½  HTTP REST API
                   ?
 +----------------------------------------------+
-¦              FastAPI Backend                 ¦
-¦  TShark Extractor | NIST Engine | Groq LLM  ¦
-¦  RAG Engine       | Attacker Analyzer        ¦
+ï¿½              FastAPI Backend                 ï¿½
+ï¿½  TShark Extractor | NIST Engine | Groq LLM  ï¿½
+ï¿½  RAG Engine       | Attacker Analyzer        ï¿½
 +----------------------------------------------+
 ```
 
@@ -79,10 +79,10 @@ IPsec Security Analyzer is a full-stack web application for network security pro
 
 ### Backend
 - **FastAPI** + **Uvicorn** (ASGI)
-- **Scapy** — Packet analysis
-- **TShark** — Packet dissection
-- **Groq SDK** — AI/LLM integration
-- **Pydantic v2** — Data validation
+- **Scapy** ï¿½ Packet analysis
+- **TShark** ï¿½ Packet dissection
+- **Groq SDK** ï¿½ AI/LLM integration
+- **Pydantic v2** ï¿½ Data validation
 
 ---
 
@@ -144,8 +144,8 @@ cd backend
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-- API: http://localhost:8000  
-- Swagger UI: http://localhost:8000/docs
+- API: https://ipsec-backend.onrender.com/  
+- Swagger UI: https://ipsec-backend.onrender.com//docs
 
 ### 6. Start the Frontend
 
@@ -165,7 +165,7 @@ App: http://localhost:3000
 
 | Variable | Description | Example |
 |---|---|---|
-| `NEXT_PUBLIC_ANALYZER_API_URL` | FastAPI backend URL | `http://localhost:8000` |
+| `NEXT_PUBLIC_ANALYZER_API_URL` | FastAPI backend URL | `https://ipsec-backend.onrender.com/` |
 | `NEXT_PUBLIC_USE_MOCK_API` | Use mock data (`true`/`false`) | `false` |
 | `GROQ_API_KEY` | Groq API key (server-side only) | `gsk_...` |
 | `GROQ_MODEL` | Groq model name | `groq/compound` |
@@ -184,34 +184,34 @@ App: http://localhost:3000
 ```
 ip-sec-security-analyzer/
 +-- app/                          # Next.js App Router
-¦   +-- layout.tsx
-¦   +-- page.tsx
-¦   +-- globals.css
+ï¿½   +-- layout.tsx
+ï¿½   +-- page.tsx
+ï¿½   +-- globals.css
 +-- components/analyzer/          # Page components
-¦   +-- analyzer-shell.tsx        # Navigation shell
-¦   +-- dashboard-page.tsx        # PCAP upload
-¦   +-- analysis-page.tsx         # Packet inspection
-¦   +-- features-page.tsx         # Feature extraction
-¦   +-- security-page.tsx         # Security assessment
-¦   +-- testbed-page.tsx          # IPsec testbed
-¦   +-- attacker-simulation-page.tsx
-¦   +-- hardening-page.tsx
-¦   +-- user-guide-page.tsx
-¦   +-- report-modal.tsx
-¦   +-- vpn-test-terminal.tsx
+ï¿½   +-- analyzer-shell.tsx        # Navigation shell
+ï¿½   +-- dashboard-page.tsx        # PCAP upload
+ï¿½   +-- analysis-page.tsx         # Packet inspection
+ï¿½   +-- features-page.tsx         # Feature extraction
+ï¿½   +-- security-page.tsx         # Security assessment
+ï¿½   +-- testbed-page.tsx          # IPsec testbed
+ï¿½   +-- attacker-simulation-page.tsx
+ï¿½   +-- hardening-page.tsx
+ï¿½   +-- user-guide-page.tsx
+ï¿½   +-- report-modal.tsx
+ï¿½   +-- vpn-test-terminal.tsx
 +-- hooks/
-¦   +-- use-analyzer.ts           # Central state hook
+ï¿½   +-- use-analyzer.ts           # Central state hook
 +-- backend/
-¦   +-- main.py                   # FastAPI entry point
-¦   +-- requirements.txt
-¦   +-- groq_analyzer.py          # Groq LLM integration
-¦   +-- security_engine.py        # NIST rules engine
-¦   +-- attacker_analyzer.py      # Attack simulation logic
-¦   +-- rag_engine.py             # RAG retrieval
-¦   +-- testbed_router.py         # Testbed routes
-¦   +-- extractor/
-¦       +-- features.py
-¦       +-- tshark.py
+ï¿½   +-- main.py                   # FastAPI entry point
+ï¿½   +-- requirements.txt
+ï¿½   +-- groq_analyzer.py          # Groq LLM integration
+ï¿½   +-- security_engine.py        # NIST rules engine
+ï¿½   +-- attacker_analyzer.py      # Attack simulation logic
+ï¿½   +-- rag_engine.py             # RAG retrieval
+ï¿½   +-- testbed_router.py         # Testbed routes
+ï¿½   +-- extractor/
+ï¿½       +-- features.py
+ï¿½       +-- tshark.py
 +-- render.yaml                   # Render deployment config
 +-- .env.example
 +-- README.md
@@ -230,7 +230,7 @@ This app uses **two Render services**:
 
 ---
 
-### Step 1 — Push to GitHub
+### Step 1 ï¿½ Push to GitHub
 
 ```bash
 git add .
@@ -240,7 +240,7 @@ git push origin main
 
 ---
 
-### Step 2 — Deploy Backend (FastAPI)
+### Step 2 ï¿½ Deploy Backend (FastAPI)
 
 1. Go to https://render.com ? **New ? Web Service**
 2. Connect your GitHub repo
@@ -262,11 +262,11 @@ git push origin main
 | `GROQ_API_KEY` | `gsk_your_key_here` |
 | `GROQ_MODEL` | `groq/compound` |
 
-5. Click **Create Web Service** — note the URL (e.g. `https://ipsec-backend.onrender.com`)
+5. Click **Create Web Service** ï¿½ note the URL (e.g. `https://ipsec-backend.onrender.com`)
 
 ---
 
-### Step 3 — Deploy Frontend (Next.js)
+### Step 3 ï¿½ Deploy Frontend (Next.js)
 
 1. **New ? Web Service** again, same repo
 2. Fill in:
@@ -294,7 +294,7 @@ git push origin main
 
 ---
 
-### Step 4 — Verify
+### Step 4 ï¿½ Verify
 
 Once both show **Live** status:
 - ?? Frontend: `https://ipsec-frontend.onrender.com`
@@ -304,13 +304,13 @@ Once both show **Live** status:
 
 ---
 
-### Using render.yaml (Recommended — Deploy Both at Once)
+### Using render.yaml (Recommended ï¿½ Deploy Both at Once)
 
 A `render.yaml` Blueprint file is included. To use it:
 
 1. Push to GitHub (Step 1 above)
 2. Render dashboard ? **New ? Blueprint**
-3. Connect your repo — Render auto-detects `render.yaml` and provisions both services
+3. Connect your repo ï¿½ Render auto-detects `render.yaml` and provisions both services
 
 ---
 
@@ -328,12 +328,12 @@ A `render.yaml` Blueprint file is included. To use it:
 | `GET` | `/testbed/status` | Testbed status |
 | `POST` | `/testbed/start` | Start IPsec testbed |
 
-Full interactive docs: `http://localhost:8000/docs`
+Full interactive docs: `https://ipsec-backend.onrender.com//docs`
 
 ---
 
 ## License
 
-MIT © 2024 — IPsec Security Analyzer
+MIT ï¿½ 2024 ï¿½ IPsec Security Analyzer
 
 > Built for network security professionals. Powered by FastAPI, Next.js, and Groq AI.

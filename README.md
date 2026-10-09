@@ -144,8 +144,8 @@ cd backend
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-- API: https://ipsec-backend.onrender.com/  
-- Swagger UI: https://ipsec-backend.onrender.com//docs
+- API: http://localhost:8000/  
+- Swagger UI: http://localhost:8000//docs
 
 ### 6. Start the Frontend
 
@@ -165,7 +165,7 @@ App: http://localhost:3000
 
 | Variable | Description | Example |
 |---|---|---|
-| `NEXT_PUBLIC_ANALYZER_API_URL` | FastAPI backend URL | `https://ipsec-backend.onrender.com/` |
+| `NEXT_PUBLIC_ANALYZER_API_URL` | FastAPI backend URL | `http://localhost:8000/` |
 | `NEXT_PUBLIC_USE_MOCK_API` | Use mock data (`true`/`false`) | `false` |
 | `GROQ_API_KEY` | Groq API key (server-side only) | `gsk_...` |
 | `GROQ_MODEL` | Groq model name | `groq/compound` |
@@ -262,7 +262,7 @@ git push origin main
 | `GROQ_API_KEY` | `gsk_your_key_here` |
 | `GROQ_MODEL` | `groq/compound` |
 
-5. Click **Create Web Service** � note the URL (e.g. `https://ipsec-backend.onrender.com`)
+5. Click **Create Web Service** � note the URL (e.g. `http://localhost:8000`)
 
 ---
 
@@ -284,7 +284,7 @@ git push origin main
 
 | Key | Value |
 |---|---|
-| `NEXT_PUBLIC_ANALYZER_API_URL` | `https://ipsec-backend.onrender.com` |
+| `NEXT_PUBLIC_ANALYZER_API_URL` | `http://localhost:8000` |
 | `NEXT_PUBLIC_USE_MOCK_API` | `false` |
 | `GROQ_API_KEY` | `gsk_your_key_here` |
 | `GROQ_MODEL` | `groq/compound` |
@@ -298,7 +298,7 @@ git push origin main
 
 Once both show **Live** status:
 - ?? Frontend: `https://ipsec-frontend.onrender.com`
-- ?? Backend docs: `https://ipsec-backend.onrender.com/docs`
+- ?? Backend docs: `http://localhost:8000/docs`
 
 > ?? **Free tier**: Services spin down after 15 min of inactivity. First cold-start request may take ~30s. Upgrade to a paid plan for always-on.
 
@@ -328,7 +328,7 @@ A `render.yaml` Blueprint file is included. To use it:
 | `GET` | `/testbed/status` | Testbed status |
 | `POST` | `/testbed/start` | Start IPsec testbed |
 
-Full interactive docs: `https://ipsec-backend.onrender.com//docs`
+Full interactive docs: `http://localhost:8000//docs`
 
 ---
 

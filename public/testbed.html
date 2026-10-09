@@ -269,7 +269,7 @@
     const ids = ["mode", "ike_version", "encryption", "integrity", "dh_group", "pfs", "ip_version", "traffic_type"];
     const $ = id => document.getElementById(id);
     const output = $("output");
-    const API_BASE = "https://ipsec-backend.onrender.com/";
+    const API_BASE = "http://localhost:8000/";
 
     function config() {
       return Object.fromEntries(ids.map(id => [id, $(id).value]));
